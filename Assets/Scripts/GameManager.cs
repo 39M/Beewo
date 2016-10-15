@@ -55,6 +55,8 @@ public class GameManager : MonoBehaviour
 	bool createdLastNote;
 	public int score = 0;
 	public int minPassScore = 500;
+	int missCount = 0;
+	int maxCanMiss = 10;
 	float musicStartTime;
 	float musicStopTime;
 	float musicTime;
@@ -89,10 +91,11 @@ public class GameManager : MonoBehaviour
 
 	void Update ()
 	{
+		musicTime = music.time;
+
 		CheckStartUpdate ();
 		CheckEndUpdate ();
 
-		musicTime = music.time;
 		if (success || failed)
 			return;
 		if (pause) {
@@ -216,6 +219,12 @@ public class GameManager : MonoBehaviour
 					int judgeCode = Mathf.FloorToInt (Mathf.Abs (bottomNotePosY - judgelinePosY) / ((maxJudgePosY - judgelinePosY) / 3));
 					switch (judgeCode) {
 					case 2:
+						missCount++;
+						if (missCount > maxCanMiss)
+						{
+							minPassScore = int.MaxValue;
+							musicStopTime = music.time + 3.2f;
+						}
 						textPrefab = missTextPrefab;
 						Debug.Log ("Miss");
 						break;
@@ -242,6 +251,12 @@ public class GameManager : MonoBehaviour
 		}
 		if (bottomNotePosY < screenBottomY) {
 			Debug.Log ("Miss");
+			missCount++;
+			if (missCount > maxCanMiss)
+			{
+				minPassScore = int.MaxValue;
+				musicStopTime = music.time + 3.2f;
+			}
 			DestroyNoteShowJudge (missTextPrefab);
 		}
 		return false;

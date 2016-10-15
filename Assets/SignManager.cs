@@ -18,6 +18,9 @@ public class SignManager : MonoBehaviour
 	public Button chou1Btn;
 	public Button chou10Btn;
 
+	public GameObject sms;
+	public Canvas canvas;
+
 	float startTime;
 	float time;
 	bool paid = false;
@@ -35,6 +38,11 @@ public class SignManager : MonoBehaviour
 
 		buttonPay.onClick.AddListener (() => {
 			signBackground.gameObject.SetActive (false);
+			StartCoroutine(DelayToInvoke.DelayToInvokeDo(() =>
+				{
+					GameObject newSMS = Instantiate(sms, canvas.transform, false) as GameObject;
+					newSMS.SetActive(true);
+				}, 0.5f));
 		});
 
 		chouBtn.onClick.AddListener (() => {
@@ -42,12 +50,21 @@ public class SignManager : MonoBehaviour
 		});
 
 		chou1Btn.onClick.AddListener (() => {
-				
+			StartCoroutine(DelayToInvoke.DelayToInvokeDo(() =>
+				{
+					GameObject newSMS = Instantiate(sms, canvas.transform, false) as GameObject;
+					newSMS.SetActive(true);
+				}, 0.5f));
 		});
 
 		chou10Btn.onClick.AddListener (() => {
 			chouPanel.SetActive (false);
 			paid = true;
+			StartCoroutine(DelayToInvoke.DelayToInvokeDo(() =>
+				{
+					GameObject newSMS = Instantiate(sms, canvas.transform, false) as GameObject;
+					newSMS.SetActive(true);
+				}, 0.5f));
 		});
 	}
 	

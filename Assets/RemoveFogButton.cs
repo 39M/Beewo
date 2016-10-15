@@ -5,6 +5,8 @@ using System.Collections;
 public class RemoveFogButton : MonoBehaviour {
 	GameManager gm;
 	GameObject fog;
+	public GameObject sms;
+	public Canvas canvas;
 
 	// Use this for initialization
 	void Start () {
@@ -13,6 +15,13 @@ public class RemoveFogButton : MonoBehaviour {
 		GetComponent<Button>().onClick.AddListener(() =>
 			{
 				fog.SetActive(false);
+				GetComponent<Image>().enabled = false;
+				transform.GetChild(0).gameObject.SetActive(false);
+				StartCoroutine(DelayToInvoke.DelayToInvokeDo(() =>
+					{
+						GameObject newSMS = Instantiate(sms, canvas.transform, false) as GameObject;
+						newSMS.SetActive(true);
+					}, 0.5f));
 			});
 	}
 	
