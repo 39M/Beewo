@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NoteBehaviour : MonoBehaviour {
+public class NoteBehaviour : MonoBehaviour
+{
 	public GameManager gm;
 	float speed = 5f;
 
-	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		transform.Translate(0, -speed * Time.deltaTime, 0);
 	}
 
-	public void Init(GameManager gameManager)
+	void Update ()
+	{
+		if (gm.pause)
+			return;
+		transform.Translate (0, -speed * Time.deltaTime, 0);
+	}
+
+	public void Init (GameManager gameManager)
 	{
 		gm = gameManager;
 		speed = gm.noteSpeed;
