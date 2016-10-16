@@ -19,8 +19,8 @@
 	public static int[] maxMissList = new int[] {
 		100,
 		50,
+		50,
+		50,
 		10,
-		10,
-		20,
 	};
 }

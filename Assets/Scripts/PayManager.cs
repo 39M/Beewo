@@ -31,6 +31,7 @@ public class PayManager : MonoBehaviour {
 				if (iconLayout.childCount > 10) {
 					explosion.SetActive(false);
 					explosion.SetActive(true);
+					normalExpFx.Play();
 					return;
 				}
 				gm.noteSpeed = 5;
@@ -45,6 +46,9 @@ public class PayManager : MonoBehaviour {
 				explosion.SetActive(false);
 				explosion.SetActive(true);
 				criticalExpFx.Play();
+				gm.minPassScore = 0;
+				gm.maxCanMiss = int.MaxValue;
+				gm.cheat = true;
 				return;
 			} else {
 				gm.noteSpeed *= 0.9f;

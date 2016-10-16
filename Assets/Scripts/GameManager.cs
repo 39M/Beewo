@@ -56,12 +56,14 @@ public class GameManager : MonoBehaviour
 	public bool failed;
 	bool createdLastNote;
 	public int score = 0;
-	public int minPassScore = 500;
-	int missCount = 0;
-	int maxCanMiss = 10;
+	public int minPassScore = 301;
+	public int missCount = 0;
+	public int maxCanMiss = 10;
 	float musicStartTime;
 	float musicStopTime;
 	float musicTime;
+	public bool cheat = false;
+	bool notFadeOut = true;
 
 	public float noteSpeed;
 	public float noteCreatePosY;
@@ -76,7 +78,7 @@ public class GameManager : MonoBehaviour
 		mainCamera = Camera.main;
 		music = mainCamera.GetComponent<AudioSource> ();
 		musicStartTime = musicTime = music.time = 19.783f;
-		musicStopTime = 49.78f;
+		musicStopTime = 49f;
 		maxCanMiss = Const.maxMissList[version];
 
 		unstart = true;
@@ -84,6 +86,8 @@ public class GameManager : MonoBehaviour
 		success = false;
 		failed = false;
 		createdLastNote = false;
+		cheat = false;
+		notFadeOut = true;
 
 		noteSpeed = Const.noteSpeedList[version];
 
@@ -92,6 +96,7 @@ public class GameManager : MonoBehaviour
 		NoteGeneratorUpdate ();
 
 		minPassScore = beatmap.Count * 150;
+		missCount = 0;
 	}
 
 	void Update ()
@@ -166,10 +171,13 @@ public class GameManager : MonoBehaviour
 				}
 			}
 		}
-		if (musicTime > musicStopTime - 1f) {
+		if ((musicTime > (musicStopTime - 1.3)) && notFadeOut) {
+			notFadeOut = false;
 			fadeAnim.Play("EndFadeCover");
 		}
-		if ((success || failed) && !music.isPlaying) {
+		Debug.Log(musicTime + "  |  " + musicStopTime);
+		if (musicTime > (musicStopTime)) {
+			Debug.Log("WTFFFF");
 			if (success) {
 				PlayerPrefs.SetInt("NextVersion", version + 1);
 				SceneManager.LoadScene("Loading");
@@ -222,6 +230,8 @@ public class GameManager : MonoBehaviour
 					GameObject fxPrefab = null;
 					GameObject textPrefab = null;
 					int judgeCode = Mathf.FloorToInt (Mathf.Abs (bottomNotePosY - judgelinePosY) / ((maxJudgePosY - judgelinePosY) / 3));
+					if (cheat)
+						judgeCode = 0;
 					switch (judgeCode) {
 					case 2:
 						missCount++;
