@@ -13,6 +13,9 @@ public class MoneyButton : MonoBehaviour {
 	public GameObject rankCanvas;
 	public GameObject goldenParticles;
 	public GameObject SMSfab;
+	public GameObject fadeCover;
+
+	public AudioClip endmoneyClip;
 
 	public GameObject noteGroup;
 
@@ -20,6 +23,7 @@ public class MoneyButton : MonoBehaviour {
 	private int moneyAddInterval;
 	private string costText;
 	AudioSource music;
+	int flag = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -33,17 +37,20 @@ public class MoneyButton : MonoBehaviour {
 		Debug.Log(costText);
 
 		music = Camera.main.GetComponent<AudioSource>();
-		music.time = 19.783f;
-		music.Pause();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (music.time > 30)
-			Application.Quit();
-
-		if (Input.GetKeyDown(KeyCode.K))
-			music.UnPause();
+		if (!music.isPlaying && flag == 0){
+			music.Stop();
+			music.clip = endmoneyClip;
+			music.Play();
+			flag = 1;
+		}
+		if (flag == 1 && music.clip.length - music.time <= 1f) {
+			fadeCover.GetComponent<Animation>().Play("EndFadeCover");
+			flag = 2;
+		}
 			
 
 		if (Input.GetKey(KeyCode.J)){
@@ -87,12 +94,6 @@ public class MoneyButton : MonoBehaviour {
 		InitNoteGroup.SetActive(true);
 
 		goldenParticles.GetComponent<ParticleSystem>().Play();
-		music.UnPause();
-
-		StartCoroutine(DelayToInvoke.DelayToInvokeDo(() =>
-			{
-//				music.Pause();
-			}, Random.Range(5f, 10f)));
 
 
 		StartCoroutine(DelayToInvoke.DelayToInvokeDo(() =>
@@ -102,7 +103,7 @@ public class MoneyButton : MonoBehaviour {
 			newSMS.SetActive(true);
 		}, 5.5f));
 
-
+		GetComponent<AudioSource>().Play();
 	}
 
 }

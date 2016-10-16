@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
 	Camera mainCamera;
 	public AudioSource music;
 	public AudioClip failClip;
+	public AudioSource hitFX;
+	public AudioClip [] hitClips;
 	List<note> beatmap = new List<note> ();
 	List<note>.Enumerator noteIterator;
 
@@ -167,7 +169,7 @@ public class GameManager : MonoBehaviour
 		if (musicTime > musicStopTime - 1f) {
 			fadeAnim.Play("EndFadeCover");
 		}
-		if (musicTime > musicStopTime) {
+		if ((success || failed) && !music.isPlaying) {
 			if (success) {
 				PlayerPrefs.SetInt("NextVersion", version + 1);
 				SceneManager.LoadScene("Loading");
@@ -260,7 +262,7 @@ public class GameManager : MonoBehaviour
 				minPassScore = int.MaxValue;
 				musicStopTime = music.time + 3.2f;
 			}
-			DestroyNoteShowJudge (missTextPrefab);
+			DestroyNoteShowJudge (missTextPrefab, null, 0, false);
 		}
 		return false;
 	}
@@ -270,13 +272,19 @@ public class GameManager : MonoBehaviour
 		scoreLabel.text = "Score: " + score;
 	}
 
-	public void DestroyNoteShowJudge (GameObject text, GameObject fx = null, float posX = 0f)
+	public void DestroyNoteShowJudge (GameObject text, GameObject fx = null, float posX = 0f, bool playHitFx = true)
 	{
 		ShowText (text);
 		if (version > 0) {
 			ShowFX (fx, posX);
 		}
 		RemoveFirstNote ();
+		if (playHitFx && hitFX) {
+			if (hitClips.Length > 0) {
+				hitFX.clip = hitClips[Random.Range(0, hitClips.Length)];
+			}
+			hitFX.Play();
+		}
 	}
 
 	public void RemoveFirstNote ()

@@ -19,7 +19,7 @@
 	public static int[] maxMissList = new int[] {
 		100,
 		50,
-		20,
+		10,
 		10,
 		20,
 	};

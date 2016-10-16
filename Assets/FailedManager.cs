@@ -10,6 +10,9 @@ public class FailedManager : MonoBehaviour
 	Animator stayDeterminAnim;
 	float startTime;
 	float time;
+	public AudioSource music;
+	public AudioClip clip, beforeClip, afterClip;
+	int flag = 0;
 
 	void Start ()
 	{
@@ -18,10 +21,27 @@ public class FailedManager : MonoBehaviour
 		cannotAnim = GameObject.Find("Canvas/CannotGiveUp").GetComponent<Animator>();
 		stayDeterminAnim = GameObject.Find("Canvas/StayDetermined").GetComponent<Animator>();
 		startTime = time = Time.time;
+
+		clip = PlayerPrefs.GetInt("NextVersion") < 3 ? beforeClip : afterClip;
 	}
 	
 	void Update ()
 	{
+		if (!music.isPlaying) {
+			if (flag == 1) {
+				music.clip = clip;
+				music.Play();
+			}
+			if (flag == 2) {
+				SceneManager.LoadScene(Const.levels[PlayerPrefs.GetInt("NextVersion")]);
+			}
+			flag++;
+		}
+
+		if (music.clip.length - music.time <= 1)
+			fadeAnim.Play("EndFadeCover");
+
+
 		time = Time.time - startTime;
 
 		if (time > 1 && time < 1.1)
@@ -37,12 +57,12 @@ public class FailedManager : MonoBehaviour
 		if (time > 10.8 && time < 11)
 		{
 			audioAnim.Play("DeterminedAudio");
-			fadeAnim.Play("EndFadeCover");
 		}
 
-		if (time > 11.78)
+		if (time > 11.78 && flag == 0)
 		{
-			SceneManager.LoadScene(Const.levels[PlayerPrefs.GetInt("NextVersion")]);
+			flag = 1;
+			music.Stop();
 		}
 	}
 }

@@ -24,6 +24,7 @@ public class SignManager : MonoBehaviour
 	float startTime;
 	float time;
 	bool paid = false;
+	bool playedTips = false;
 
 	// Use this for initialization
 	void Start ()
@@ -77,8 +78,13 @@ public class SignManager : MonoBehaviour
 		} else {
 			time = Time.time - startTime;
 		}
-		if (time > 1)
+		if (time > 4.7f)
 		{
+			if (!playedTips) {
+				GetComponent<AudioSource>().Play();
+				playedTips = true;
+			}
+
 			gm.pause = !paid;
 			needChou.SetActive(!paid);
 		}
