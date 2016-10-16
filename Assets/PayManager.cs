@@ -13,6 +13,9 @@ public class PayManager : MonoBehaviour {
 	public Canvas canvas;
 	AudioSource music;
 
+	public AudioSource normalExpFx;
+	public AudioSource criticalExpFx;
+
 
 	void Start () {
 		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -41,11 +44,14 @@ public class PayManager : MonoBehaviour {
 //				gameObject.SetActive(false);
 				explosion.SetActive(false);
 				explosion.SetActive(true);
+				criticalExpFx.Play();
+				return;
 			} else {
 				gm.noteSpeed *= 0.9f;
 				if (gm.noteSpeed < 2)
 					gm.noteSpeed = 2;
 			}
+			normalExpFx.Play();
 		});
 	}
 	

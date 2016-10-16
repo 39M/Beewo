@@ -26,6 +26,11 @@ public class SignManager : MonoBehaviour
 	bool paid = false;
 	bool playedTips = false;
 
+	public AudioSource threeDayFx;
+	public AudioSource allDayFx;
+	public AudioSource oneChouFx;
+	public AudioSource tenChouFx;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -35,6 +40,7 @@ public class SignManager : MonoBehaviour
 			thirdDay.gameObject.SetActive (false);
 			sign2Day.gameObject.SetActive (false);
 			sign3Day.gameObject.SetActive (true);
+			threeDayFx.Play();
 		});
 
 		buttonPay.onClick.AddListener (() => {
@@ -44,6 +50,7 @@ public class SignManager : MonoBehaviour
 					GameObject newSMS = Instantiate(sms, canvas.transform, false) as GameObject;
 					newSMS.SetActive(true);
 				}, 0.5f));
+			allDayFx.Play();
 		});
 
 		chouBtn.onClick.AddListener (() => {
@@ -56,6 +63,7 @@ public class SignManager : MonoBehaviour
 					GameObject newSMS = Instantiate(sms, canvas.transform, false) as GameObject;
 					newSMS.SetActive(true);
 				}, 0.5f));
+			oneChouFx.Play();
 		});
 
 		chou10Btn.onClick.AddListener (() => {
@@ -66,6 +74,7 @@ public class SignManager : MonoBehaviour
 					GameObject newSMS = Instantiate(sms, canvas.transform, false) as GameObject;
 					newSMS.SetActive(true);
 				}, 0.5f));
+			tenChouFx.Play();
 		});
 	}
 	
