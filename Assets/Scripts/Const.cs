@@ -15,4 +15,12 @@
 		10,
 		100,
 	};
+
+	public static int[] maxMissList = new int[] {
+		100,
+		50,
+		20,
+		10,
+		20,
+	};
 }

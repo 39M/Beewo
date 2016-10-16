@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
 		music = mainCamera.GetComponent<AudioSource> ();
 		musicStartTime = musicTime = music.time = 19.783f;
 		musicStopTime = 49.78f;
+		maxCanMiss = Const.maxMissList[version];
 
 		unstart = true;
 		pause = true;
@@ -87,6 +88,8 @@ public class GameManager : MonoBehaviour
 		LoadBeatmap ();
 		SetPositions ();
 		NoteGeneratorUpdate ();
+
+		minPassScore = beatmap.Count * 150;
 	}
 
 	void Update ()

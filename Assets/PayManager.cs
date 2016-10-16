@@ -4,13 +4,14 @@ using System.Collections;
 
 public class PayManager : MonoBehaviour {
 	GameManager gm;
-	public AudioClip music;
+	public AudioClip clip;
 	public Button payButton;
 	public GameObject iconGroup;
 	public Transform iconLayout;
 	public GameObject explosion;
 	public GameObject sms;
 	public Canvas canvas;
+	AudioSource music;
 
 
 	void Start () {
@@ -30,9 +31,13 @@ public class PayManager : MonoBehaviour {
 					return;
 				}
 				gm.noteSpeed = 5;
-				Camera.main.GetComponent<AudioSource>().clip = music;
-				Camera.main.GetComponent<AudioSource>().Play();
-				Camera.main.GetComponent<AudioSource>().Pause();
+				music = Camera.main.GetComponent<AudioSource>();
+				float t = music.time;
+				music.clip = clip;
+				music.Play();
+				music.time = t;
+				if (gm.pause)
+					music.Pause();
 //				gameObject.SetActive(false);
 				explosion.SetActive(false);
 				explosion.SetActive(true);

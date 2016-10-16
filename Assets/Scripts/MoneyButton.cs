@@ -39,6 +39,12 @@ public class MoneyButton : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (music.time > 30)
+			Application.Quit();
+
+		if (Input.GetKeyDown(KeyCode.K))
+			music.UnPause();
+			
 
 		if (Input.GetKey(KeyCode.J)){
 			ExecuteEvents.Execute<IPointerClickHandler>(gameObject,  new PointerEventData(EventSystem.current), ExecuteEvents.pointerClickHandler);
@@ -83,14 +89,14 @@ public class MoneyButton : MonoBehaviour {
 
 		StartCoroutine(DelayToInvoke.DelayToInvokeDo(() =>
 			{
-				music.Pause();
-			}, Random.Range(3f, 6f)));
+//				music.Pause();
+			}, Random.Range(5f, 10f)));
 
+		GameObject newSMS = Instantiate(SMSfab, canvas.transform, false) as GameObject;
+		newSMS.transform.GetChild(0).GetComponent<AudioSource>().volume = 0.5f;
+		newSMS.SetActive(true);
 		StartCoroutine(DelayToInvoke.DelayToInvokeDo(() =>
 			{
-				GameObject newSMS = Instantiate(SMSfab, canvas.transform, false) as GameObject;
-				newSMS.transform.GetChild(0).GetComponent<AudioSource>().volume = 0.5f;
-				newSMS.SetActive(true);
 			}, 0.5f));
 
 
