@@ -72,10 +72,12 @@ public class MoneyButton : MonoBehaviour {
 
 		// GameObject InitRank = Instantiate(rankPrefab) as GameObject;
 		//GameObject InitRank = (GameObject)Instantiate(rankPrefab, rankCanvas.transform, false);
-		GameObject InitRank = (GameObject)Instantiate(rankPrefab, alwaysPerfectRank.transform.position, alwaysPerfectRank.transform.rotation);
-		InitRank.transform.parent = rankCanvas.transform;
-		InitRank.GetComponent<Transform>().position = alwaysPerfectRank.GetComponent<Transform>().position;
+		GameObject InitRank = Instantiate(rankPrefab, rankCanvas.transform, false) as GameObject;
+		// InitRank.transform.parent = rankCanvas.transform;
+		// InitRank.GetComponent<Transform>().position = alwaysPerfectRank.GetComponent<Transform>().position;
+		InitRank.SetActive(true);
 		InitRank.GetComponent<Animator>().SetTrigger("StartAppear");
+
 
 		float tempX = Random.Range(-1.0f, 1.0f) * 3.0f;
 
@@ -92,12 +94,13 @@ public class MoneyButton : MonoBehaviour {
 //				music.Pause();
 			}, Random.Range(5f, 10f)));
 
-		GameObject newSMS = Instantiate(SMSfab, canvas.transform, false) as GameObject;
-		newSMS.transform.GetChild(0).GetComponent<AudioSource>().volume = 0.5f;
-		newSMS.SetActive(true);
+
 		StartCoroutine(DelayToInvoke.DelayToInvokeDo(() =>
-			{
-			}, 0.5f));
+		{
+			GameObject newSMS = Instantiate(SMSfab, canvas.transform, false) as GameObject;
+			newSMS.transform.GetChild(0).GetComponent<AudioSource>().volume = 0.5f;
+			newSMS.SetActive(true);
+		}, 5.5f));
 
 
 	}
